@@ -1,18 +1,20 @@
-var express=require('express')
-const bodyParser = require('body-parser');
+const express = require('express');
 const path = require('path');
 
-var app=express()
+const app = express();
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public'));
+// Set EJS as templating engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
-app.set('view engine', 'ejs')
+// Serve static files (for Bootstrap CSS via CDN, this is optional)
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', (req, res)=>{
-    res.render('index',{title:'My App'})
-})
+app.get('/', (req, res) => {
+    res.render('index', { message: 'Hello World' });
+});
 
-app.listen(3000, ()=>{
-    console.log('app is running')
-})
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+});
